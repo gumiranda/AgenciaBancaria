@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="344.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxmvc.view.FXMLAnchorPaneCadastrosContaClienteDialogController">
+   <children>
+      <AnchorPane prefHeight="187.0" prefWidth="600.0">
+         <children>
+            <Label layoutX="79.0" layoutY="21.0" text="Detalhes do Cliente">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <GridPane layoutX="79.0" layoutY="53.0" prefHeight="120.0" prefWidth="418.0">
+               <children>
+                  <Label text="Nome" />
+                  <Label text="CPF" GridPane.rowIndex="1" />
+                  <Label text="Telefone" GridPane.rowIndex="2" />
+                  <Label prefHeight="17.0" prefWidth="62.0" text="Endereço" GridPane.rowIndex="3" />
+                  <TextField id="formCodCliente" fx:id="textFieldClienteNome" GridPane.columnIndex="1" />
+                  <TextField id="formNomeCliente" fx:id="textFieldClienteCPF" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField id="formCPFCliente" fx:id="textFieldClienteTelefone" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField id="formTelCliente" fx:id="textFieldClienteEndereco" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label prefHeight="17.0" prefWidth="62.0" text="Cidade" GridPane.rowIndex="4" />
+                  <Label prefHeight="17.0" prefWidth="62.0" text="Estado" GridPane.rowIndex="5" />
+                  <TextField id="formTelCliente" fx:id="textFieldClienteCidade" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <TextField id="formTelCliente" fx:id="textFieldClienteEstado" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+               </children>
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="203.0" minWidth="10.0" prefWidth="160.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.0" minWidth="10.0" prefWidth="258.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="166.0" prefHeight="127.0" prefWidth="600.0">
+         <children>
+            <Label layoutX="76.0" layoutY="14.0" text="Detalhes da conta">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+            <GridPane layoutX="76.0" layoutY="36.0" prefHeight="90.0" prefWidth="418.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="204.0" minWidth="10.0" prefWidth="162.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="307.0" minWidth="10.0" prefWidth="256.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label prefHeight="17.0" prefWidth="89.0" text="Agência" GridPane.rowIndex="1" />
+                  <Label GridPane.rowIndex="1" />
+                  <ComboBox fx:id="comboBoxAgencia" prefHeight="25.0" prefWidth="263.0" promptText="Selecione a agencia" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
+      <Label layoutX="131.0" layoutY="294.0" prefHeight="17.0" prefWidth="144.0">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Button fx:id="buttonCancelar" layoutX="359.0" layoutY="280.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="155.0" text="Cancelar" />
+      <Button fx:id="buttonConfirmar" layoutX="104.0" layoutY="280.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="144.0" text="Inserir" />
+   </children>
+</AnchorPane>

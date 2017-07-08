@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="391.0" prefWidth="417.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="javafxmvc.view.FXMLAnchorPaneCadastroEmprestimosDialogController">
+   <children>
+      <AnchorPane layoutX="8.0" layoutY="7.0" prefHeight="384.0" prefWidth="587.0">
+         <children>
+            <Label fx:id="labelCpfCliente" layoutX="14.0" layoutY="86.0" text="CPF do cliente">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="textfieldCpfCliente" layoutX="180.0" layoutY="84.0" prefHeight="20.0" prefWidth="202.0" />
+            <Label fx:id="labelNumAgencia" layoutX="14.0" layoutY="150.0" text="Selecione a agencia">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelValorEmprestimo" layoutX="13.0" layoutY="230.0" text="Valor">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelQdeParcelas" layoutX="180.0" layoutY="230.0" text="Quantidade de Parcelas">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="textFieldValor" layoutX="71.0" layoutY="228.0" prefHeight="25.0" prefWidth="64.0" />
+            <TextField fx:id="textFieldQdeParcelas" layoutX="345.0" layoutY="228.0" prefHeight="25.0" prefWidth="57.0" />
+            <Button fx:id="botaoCriar" layoutX="402.0" layoutY="322.0" mnemonicParsing="false" onAction="#handleBotaoCriar" text="Criar">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="botaoCancelar" layoutX="486.0" layoutY="322.0" mnemonicParsing="false" onAction="#handleButtonCancelar" text="Cancelar">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <ComboBox fx:id="comboBoxAgencia" layoutX="178.0" layoutY="148.0" prefHeight="25.0" prefWidth="202.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
