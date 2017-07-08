@@ -1,5 +1,5 @@
 ﻿
-------------------------------- ESSE SCRIPT CONTÉM A CRIAÇÃO DAS TABELAS E O POVOAMENTO DO BANCO ------------------------------------------------
+------------------------------- ESSE SCRIPT CONTÉM A CRIAÇÃO DAS TABELAS, POVOAMENTO DO BANCO  E CONSULTAS ---------------------------
 
 CREATE SCHEMA bancoATUALIZADO;
 set search_path to bancoATUALIZADO;
@@ -242,6 +242,80 @@ INSERT INTO cliente_possui_emprestimo VALUES (4,3);
 INSERT INTO cliente_possui_emprestimo VALUES (5,5);
 
 
+--------------------------- ESPECIFICAÇÃO DE CONSULTAS -------------------------------------
 
+--  2 CONSULTAS COM GROUP BY E FUNÇÕES DE AGREGAÇÃO
+
+--1) Mostrar a quantidade de clientes que possuem conta corrente por agencia (mostrar nome da agencia e quantidade de clientes)
+SELECT agencia.nome, COUNT(cliente_possui_contacorrente.cliente_id) AS qdeClientes
+FROM agencia inner join cliente_possui_contacorrente
+ON agencia.cdagencia = cliente_possui_contacorrente.agencia_id
+GROUP BY agencia.cdagencia;
+
+--2) Mostrar a media de saldo de clientes por agencia que possuem conta corrente
+SELECT AVG(contacorrente.saldo) AS mediaSaldo
+FROM cliente_possui_contacorrente INNER JOIN contacorrente
+ON contacorrente.cdconta = cliente_possui_contacorrente.conta_id
+inner join agencia on agencia.cdagencia = contacorrente.agencia_codigo
+GROUP BY agencia.cdagencia;
+
+-- 2 CONSULTAS COM GROUP BY, FUNÇÕES DE AGREGACAO E HAVING
+
+--3) Mostrar a quantidade de agencias por cidade que possuem mais de uma conta poupanca (mostrar a cidade e quantidade de agencias)
+SELECT agencia.cidade, COUNT(agencia.cdagencia) AS qdeAgencias
+FROM agencia INNER JOIN cliente_possui_contapoupanca
+ON agencia.cdagencia = cliente_possui_contapoupanca.agencia_id
+GROUP BY agencia.cidade
+HAVING COUNT(cliente_possui_contapoupanca.cliente_id) > 1;
+
+--4) Mostrar a quantidade de funcionarios por agencia que tem mais de um dependente ( mostrar a agencia e a qde de funcionarios)
+SELECT agencia.nome, COUNT(funcionario.nro_funcional) AS qdeFuncionarios
+FROM funcionario inner join agencia
+ON agencia.cdagencia = funcionario.agencia_codigo
+INNER JOIN dependente 
+ON dependente.nro_funcional_funcionario = funcionario.nro_funcional
+GROUP BY agencia.nome
+HAVING COUNT(dependente.nome_do_dependente) > 1;
+
+
+--5) Mostrar todos os clientes da agencia Banco do Brasil que possuem conta corrente e  moram em Uberlandia
+SELECT clientes.nome
+FROM clientes INNER JOIN cliente_possui_contacorrente
+ON clientes.cdcliente = cliente_possui_contacorrente.cliente_id
+INNER JOIN agencia ON agencia.cdagencia = cliente_possui_contacorrente.agencia_id
+WHERE clientes.cidade = 'Uberlandia';
+
+--6) Mostrar os funcionarios que sao gerentes da agencia Santander
+SELECT funcionario.nome
+FROM funcionario INNER JOIN clientes
+ON funcionario.nro_funcional = clientes.nro_funcional_funcionario
+inner join agencia ON agencia.cdagencia = funcionario.agencia_codigo
+WHERE agencia.nome = 'Santander';
+
+--7) Mostrar as operações bancarias feitas em 2017 e os cupons gerados por elas
+SELECT *
+FROM operacaobancaria INNER JOIN cupom
+ON operacaobancaria.cdoperacao = cupom.operacao_cd
+WHERE extract( year from operacaobancaria.data_operacao) = '2017';
+
+--8) Mostrar o valor dos emprestimos feitos por clientes que possuem idade superior a 18 anos.
+SELECT emprestimo.valor
+FROM emprestimo INNER JOIN cliente_possui_emprestimo
+ON emprestimo.cdemprestimo = cliente_possui_emprestimo.cd_emprestimo
+INNER JOIN clientes ON clientes.cdcliente = cliente_possui_emprestimo.cd_cliente
+WHERE  extract(year from current_date) - extract( year from clientes.data_de_nascimento) > 18;
+
+--9) Mostrar os funcionarios com tempo de serviço maior que 5 anos e que possuem dependentes
+SELECT funcionario.nome
+FROM funcionario INNER JOIN dependente
+ON funcionario.nro_funcional = dependente.nro_funcional_funcionario
+WHERE funcionario.tempo_de_servico > 5;
+
+--10) Mostrar os clientes com saldo de conta corrente menor que 500 
+SELECT clientes.nome
+FROM clientes inner join cliente_possui_contacorrente
+ON clientes.cdcliente = cliente_possui_contacorrente.cliente_id
+INNER JOIN contacorrente ON contacorrente.cdconta = cliente_possui_contacorrente.conta_id
+WHERE contacorrente.saldo > 500;
 
 

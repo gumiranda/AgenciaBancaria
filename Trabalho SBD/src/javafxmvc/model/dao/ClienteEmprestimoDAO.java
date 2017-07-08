@@ -46,6 +46,7 @@ public class ClienteEmprestimoDAO {
         }
     }
 
+    /*
     public boolean alterar(ClienteEmprestimo clienteemp) {
         String sql = "UPDATE cliente_possui_emprestimo SET cd_emprestimo=?, cd_cliente=? WHERE cdEmprestimo=?, cd_cliente=?";
         try {
@@ -58,14 +59,13 @@ public class ClienteEmprestimoDAO {
             Logger.getLogger(ClienteEmprestimoDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-    }
+    }*/
 
     public boolean remover(ClienteEmprestimo clienteemp) {
-        String sql = "DELETE FROM cliente_possui_emprestimo WHERE cd_emprestimo=?, cd_cliente=?";
+        String sql = "DELETE FROM cliente_possui_emprestimo WHERE cd_emprestimo=?";
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, clienteemp.getCdEmprestimo());
-            stmt.setInt(2, clienteemp.getCdCliente());
             stmt.execute();
             return true;
         } catch (SQLException ex) {
@@ -112,7 +112,7 @@ public class ClienteEmprestimoDAO {
         return retorno;
     }
 
-    public ClienteEmprestimo buscar(ClienteEmprestimo clienteemp) {
+   /* public ClienteEmprestimo buscar(ClienteEmprestimo clienteemp) {
         String sql = "SELECT * FROM emprestimo WHERE cd_emprestimo=?, cd_cliente=?";
         ClienteEmprestimo retorno = new ClienteEmprestimo();
         try {
@@ -121,11 +121,43 @@ public class ClienteEmprestimoDAO {
              stmt.setInt(2, clienteemp.getCdCliente());
             ResultSet resultado = stmt.executeQuery();
             if (resultado.next()) {
+                ClienteDAO clienteDAO = new ClienteDAO();
+                clienteDAO.setConnection(connection);
+               EmprestimoDAO empDAO = new EmprestimoDAO();
+                clienteDAO.setConnection(connection);
                 Emprestimo e = new Emprestimo();
                 Cliente c = new Cliente();
                  e.setCdEmprestimo(resultado.getInt("cd_emprestimo"));
                  c.setCdCliente(resultado.getInt("cd_cliente"));
+                 c = clienteDAO.buscar(c);
+                 e = empDAO.buscar(e);
                 clienteemp.setEmprestimo(e);
+                clienteemp.setCliente(c);
+                retorno = clienteemp;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteEmprestimoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return retorno;
+    }*/
+    
+      public ClienteEmprestimo buscarPorCodigo(ClienteEmprestimo clienteemp) {
+        String sql = "SELECT * FROM emprestimo WHERE cd_emprestimo=?";
+        ClienteEmprestimo retorno = new ClienteEmprestimo();
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, clienteemp.getCdEmprestimo());
+            ResultSet resultado = stmt.executeQuery();
+            if (resultado.next()) {
+                ClienteDAO clienteDAO = new ClienteDAO();
+                clienteDAO.setConnection(connection);
+               
+                Cliente c = new Cliente();
+            
+                 c.setCdCliente(resultado.getInt("cd_cliente"));
+                 c = clienteDAO.buscar(c);
+                
+               
                 clienteemp.setCliente(c);
                 retorno = clienteemp;
             }

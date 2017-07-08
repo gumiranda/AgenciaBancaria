@@ -6,18 +6,11 @@ import java.time.LocalDate;
 public class Funcionario implements Serializable {
 
     private int cdFuncionario;
-    private int tempo_de_servico;
+        private int tempo_de_servico;
     private String nome;
     private LocalDate data_de_admissao;
     private String telefone;
     private Agencia agencia;
-    private Funcionario supervisor;
-    public Funcionario getSupervisor(){
-        return supervisor;
-    }
-    public void setSupervisor(Funcionario f){
-        supervisor = f;
-    }
     public Agencia getAgencia(){
         return agencia;
     }
