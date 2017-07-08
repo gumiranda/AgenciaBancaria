@@ -73,7 +73,37 @@ public class FuncionarioDAO {
             return false;
         }
     }
+   public List<Funcionario> listar(Agencia f) {
+        String sql = "SELECT * FROM funcionario WHERE agencia_codigo =?";
+        List<Funcionario> retorno = new ArrayList<>();
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, f.getCdAgencia());
+            ResultSet resultado = stmt.executeQuery();
+            while (resultado.next()) {
+                Funcionario funcionario = new Funcionario();
+                Agencia a = new Agencia();
+                funcionario.setCdFuncionario(resultado.getInt("nro_funcional"));
+                funcionario.setNome(resultado.getString("nome"));
+                funcionario.setTelefone(resultado.getString("telefone"));
+                funcionario.setTempoServico(resultado.getInt("tempo_de_servico"));
+                funcionario.setData(resultado.getDate("data").toLocalDate());
+                a.setCdAgencia(resultado.getInt("agencia_codigo"));
 
+                        //Obtendo os dados completos da agencia associada ao funcionario
+                AgenciaDAO agenciaDAO = new AgenciaDAO();
+                agenciaDAO.setConnection(connection);
+                a = agenciaDAO.buscar(a);
+                
+                 funcionario.setAgencia(a);
+                
+                retorno.add(funcionario);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return retorno;
+    }
     public List<Funcionario> listar() {
         String sql = "SELECT * FROM funcionario";
         List<Funcionario> retorno = new ArrayList<>();

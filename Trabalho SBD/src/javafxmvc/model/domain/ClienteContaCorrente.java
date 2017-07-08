@@ -7,7 +7,9 @@ public class ClienteContaCorrente implements Serializable {
 private ContaCorrente contacorrente;
 private Cliente cliente;
 private Agencia agencia;
-
+private int codigoCliente;
+private String cpfCliente;
+private int codigoConta;
 
     public ClienteContaCorrente(ContaCorrente contacorrente, Cliente cliente, Agencia agencia) {
         this.contacorrente = contacorrente;
@@ -47,9 +49,13 @@ public int getClienteCodigo(){
 public void setClienteCodigo(int id){
     this.cliente.setCdCliente(id);
 }
-
 public void setContaCodigo(int cod){
     this.contacorrente.setCdConta(cod);
+    this.codigoConta = cod;
+}
+public void setClienteCPF(String cod){
+    this.cliente.setCpf(cod);
+    this.cpfCliente = cod;
 }
 
     public ContaCorrente getContacorrente() {

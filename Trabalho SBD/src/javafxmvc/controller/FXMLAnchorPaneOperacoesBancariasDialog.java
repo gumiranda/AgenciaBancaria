@@ -33,10 +33,7 @@ public class FXMLAnchorPaneOperacoesBancariasDialog implements Initializable {
     private DatePicker datePickerOperacaoBancariaData;
     @FXML
     private ComboBox comboBoxOperacaoBancariaContaCorrente;
-    @FXML
-    private ComboBox comboBoxTipoOperacao;
-    @FXML
-    private ComboBox comboBoxDescricaoOperacao;
+    
     @FXML
     private TextField textFieldOperacaoBancariaTipo;
     @FXML
@@ -51,52 +48,32 @@ public class FXMLAnchorPaneOperacoesBancariasDialog implements Initializable {
     private Stage dialogStage;
     private boolean buttonConfirmarClicked = false;
     private OperacaoBancaria operacaoBancaria;
-    private ContaCorrente contaCorrente;
-    private List<Cliente> listClientes;
+  private List<Cliente> listClientes;
     private List<ContaCorrente> listContaCorrentes;
     private ObservableList<Cliente> observableListClientes;
     private ObservableList<ContaCorrente> observableListContaCorrentes;
-    private List<String> listTipos;
-    private ObservableList<String> observableListTipos;
-      private List<String> listDescricao;
-    private ObservableList<String> observableListDescricao;
-
-
+    
     //Atributos para manipulação de Banco de Dados
     private final Database database = DatabaseFactory.getDatabase("postgresql");
     private final Connection connection = database.conectar();
     private final ClienteContaCorrenteDAO clienteContaCorrenteDAO = new ClienteContaCorrenteDAO();
     private final ContaCorrenteDAO contaCorrenteDAO = new ContaCorrenteDAO();
-
+    
+    
+    
+    
+    
+    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        
         clienteContaCorrenteDAO.setConnection(connection);
         contaCorrenteDAO.setConnection(connection);
         carregarComboBoxClientes();
         carregarComboBoxContaCorrentes();
-        carregarComboBoxTipoOperacao();
-        carregarComboBoxDescricaoOperacao();
         // TODO
     }
-
-    public void carregarComboBoxTipoOperacao() {
-        listTipos.add("Credito");
-        listTipos.add("Debito");
-
-        observableListTipos = FXCollections.observableArrayList(listTipos);
-        comboBoxTipoOperacao.setItems(observableListTipos);
-    }
-    
-     public void carregarComboBoxDescricaoOperacao() {
-        listDescricao.add("Deposito");
-        listDescricao.add("Saque");
-        listDescricao.add("Pagamento");
-        observableListDescricao = FXCollections.observableArrayList(listDescricao);
-        comboBoxDescricaoOperacao.setItems(observableListDescricao);
-    }
-
-
     public void carregarComboBoxClientes() {
         listClientes = clienteContaCorrenteDAO.listarCliente();
         observableListClientes = FXCollections.observableArrayList(listClientes);
@@ -107,14 +84,13 @@ public class FXMLAnchorPaneOperacoesBancariasDialog implements Initializable {
         listContaCorrentes = clienteContaCorrenteDAO.listarConta();
         observableListContaCorrentes = FXCollections.observableArrayList(listContaCorrentes);
         comboBoxOperacaoBancariaContaCorrente.setItems(observableListContaCorrentes);
-        if (comboBoxOperacaoBancariaCliente.getSelectionModel().getSelectedItem() != null) {
-            Cliente cliente = (Cliente) comboBoxOperacaoBancariaCliente.getSelectionModel().getSelectedItem();
-            listContaCorrentes = clienteContaCorrenteDAO.listarConta(cliente);
-            observableListContaCorrentes = FXCollections.observableArrayList(listContaCorrentes);
-            comboBoxOperacaoBancariaContaCorrente.setItems(observableListContaCorrentes);
+           if (comboBoxOperacaoBancariaCliente.getSelectionModel().getSelectedItem() != null) {
+                  Cliente cliente = (Cliente) comboBoxOperacaoBancariaCliente.getSelectionModel().getSelectedItem();
+         listContaCorrentes = clienteContaCorrenteDAO.listarConta(cliente);
+         observableListContaCorrentes = FXCollections.observableArrayList(listContaCorrentes);
+        comboBoxOperacaoBancariaContaCorrente.setItems(observableListContaCorrentes);
         }
     }
-
     public Stage getDialogStage() {
         return dialogStage;
     }
@@ -140,102 +116,67 @@ public class FXMLAnchorPaneOperacoesBancariasDialog implements Initializable {
         this.textFieldOperacaoBancariaTipo.setText(operacaoBancaria.getTipo());
         this.textFieldOperacaoBancariaDescricao.setText(operacaoBancaria.getDescricao());
         this.textFieldOperacaoBancariaValor.setText(Double.toString(operacaoBancaria.getValor()));
+       
+    }
+
+ 
+
+    @FXML
+    public void handleButtonConfirmar() {
+        if (validarEntradaDeDados()) {
+        ContaCorrente contaCorrente = new ContaCorrente();
+        ClienteContaCorrente ccc = new ClienteContaCorrente();
+        if (comboBoxOperacaoBancariaCliente.getSelectionModel().getSelectedItem() != null) {
+          Cliente cliente2 = (Cliente) comboBoxOperacaoBancariaCliente.getSelectionModel().getSelectedItem();
+            ccc.setCliente(cliente2);
+            ccc.setClienteCodigo(cliente2.getCdCliente());
+             if (comboBoxOperacaoBancariaContaCorrente.getSelectionModel().getSelectedItem() != null) {
+            contaCorrente = (ContaCorrente) comboBoxOperacaoBancariaContaCorrente.getSelectionModel().getSelectedItem();
+           ccc.setContacorrente(contaCorrente);
+           ccc.setContaCodigo(contaCorrente.getCdConta());
+             operacaoBancaria.setConta(contaCorrente); 
+         }
+        }        
+            operacaoBancaria.setTipo(textFieldOperacaoBancariaTipo.getText());
+            operacaoBancaria.setDescricao(textFieldOperacaoBancariaDescricao.getText());
+            operacaoBancaria.setDataOperacao(datePickerOperacaoBancariaData.getValue());
+            operacaoBancaria.setValor(Double.parseDouble(textFieldOperacaoBancariaValor.getText()));
+            buttonConfirmarClicked = true;
+            dialogStage.close();
+        }
 
     }
 
     @FXML
-    public void handleButtonConfirmar() {
-        boolean x;
-        if (validarEntradaDeDados()) {
-
-            ClienteContaCorrente ccc = new ClienteContaCorrente();
-            if (comboBoxOperacaoBancariaCliente.getSelectionModel().getSelectedItem() != null) {
-                Cliente cliente2 = (Cliente) comboBoxOperacaoBancariaCliente.getSelectionModel().getSelectedItem();
-                ccc.setCliente(cliente2);
-                ccc.setClienteCodigo(cliente2.getCdCliente());
-                if (comboBoxOperacaoBancariaContaCorrente.getSelectionModel().getSelectedItem() != null) {
-                    contaCorrente = (ContaCorrente) comboBoxOperacaoBancariaContaCorrente.getSelectionModel().getSelectedItem();
-                    ccc.setContacorrente(contaCorrente);
-                    ccc.setContaCodigo(contaCorrente.getCdConta());
-                    
-                    operacaoBancaria.setAgencia(contaCorrente.getAgencia());
-                    
-                    // realiza saque
-                    if (((String) comboBoxTipoOperacao.getSelectionModel().getSelectedItem()).equals("Debito")
-                            && comboBoxDescricaoOperacao.getSelectionModel().getSelectedItem().equals("Saque")) {
-                        x = contaCorrente.sacar(Double.parseDouble(textFieldOperacaoBancariaValor.getText()));
-                        if (x == false) { 
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Erro na operacao");
-                            alert.setHeaderText("Saldo Insuficiente! Tente novamente...");
-                            alert.setContentText("");
-                            alert.show();
-                            dialogStage.close();
-                        }
-                    }
-                    
-                    // realiza pagamento
-                    else if (((String) comboBoxTipoOperacao.getSelectionModel().getSelectedItem()).equals("Debito")
-                            && comboBoxDescricaoOperacao.getSelectionModel().getSelectedItem().equals("Pagamento")) {
-                        x = contaCorrente.sacar(Double.parseDouble(textFieldOperacaoBancariaValor.getText()));
-                        if (x == false) {
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Erro na operacao");
-                            alert.setHeaderText("Saldo Insuficiente! Tente novamente...");
-                            alert.setContentText("");
-                            alert.show();
-                            dialogStage.close();
-                        } 
-                        
-                        // realiza deposito
-                        else if (((String) comboBoxDescricaoOperacao.getSelectionModel().getSelectedItem()).equals("Deposito")) {
-                            contaCorrente.depositar(Double.parseDouble(textFieldOperacaoBancariaValor.getText()));
-                        }
-
-                    }
-                }
-            }
-            operacaoBancaria.setTipo((String) comboBoxTipoOperacao.getSelectionModel().getSelectedItem());
-            operacaoBancaria.setDescricao((String) comboBoxDescricaoOperacao.getSelectionModel().getSelectedItem());
-            operacaoBancaria.setDataOperacao(datePickerOperacaoBancariaData.getValue());
-            operacaoBancaria.setValor(Double.parseDouble(textFieldOperacaoBancariaValor.getText()));
-            operacaoBancaria.setConta(contaCorrente);
-            contaCorrente.setUltimoAcesso(datePickerOperacaoBancariaData.getValue());
-            buttonConfirmarClicked = true;
-            dialogStage.close();
-        }
+    public void handleButtonCancelar() {
+        dialogStage.close();
     }
 
-        @FXML
-        public void handleButtonCancelar() {
-        dialogStage.close();
-        }
-        
-        //Validar entrada de dados para o cadastro
+    //Validar entrada de dados para o cadastro
     private boolean validarEntradaDeDados() {
         String errorMessage = "";
 
-        if (comboBoxTipoOperacao.getSelectionModel().getSelectedItem() == null) {
-            errorMessage += "Tipo nao selecionado!\n";
+        if (textFieldOperacaoBancariaTipo.getText() == null || textFieldOperacaoBancariaTipo.getText().length() == 0) {
+            errorMessage += "Tipo inválido!\n";
         }
-        if (comboBoxDescricaoOperacao.getSelectionModel().getSelectedItem() == null) {
-            errorMessage += "Descricao nao selecionada!\n";
+        if (textFieldOperacaoBancariaDescricao.getText() == null || textFieldOperacaoBancariaDescricao.getText().length() == 0) {
+            errorMessage += "Descricao inválida!\n";
         }
         if (textFieldOperacaoBancariaValor.getText() == null || textFieldOperacaoBancariaValor.getText().length() == 0) {
             errorMessage += "Valor inválido!\n";
         }
-        if (datePickerOperacaoBancariaData.getValue() == null) {
+            if (datePickerOperacaoBancariaData.getValue() == null) {
             errorMessage += "Data inválida!\n";
         }
-        if (comboBoxOperacaoBancariaContaCorrente.getSelectionModel().getSelectedItem() == null) {
-            errorMessage += "Conta corrente não selecionada!\n";
+        /*     if (comboBoxOperacaoBancariaContaCorrente.getSelectionModel().getSelectedItem() == null) {
+                         errorMessage += "Conta corrente não selecionada!\n";
 
-        }
-        if (comboBoxOperacaoBancariaCliente.getSelectionModel().getSelectedItem() == null) {
-            errorMessage += "Cliente não selecionado!\n";
+         }
+             if (comboBoxOperacaoBancariaCliente.getSelectionModel().getSelectedItem() == null) {
+                         errorMessage += "Cliente não selecionado!\n";
 
-        }
-
+         }
+*/
         if (errorMessage.length() == 0) {
             return true;
         } else {
@@ -248,5 +189,7 @@ public class FXMLAnchorPaneOperacoesBancariasDialog implements Initializable {
             return false;
         }
     }
+
+
 
 }

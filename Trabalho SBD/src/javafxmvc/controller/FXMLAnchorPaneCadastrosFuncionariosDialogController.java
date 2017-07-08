@@ -23,6 +23,7 @@ import javafxmvc.model.dao.FuncionarioDAO;
 import javafxmvc.model.database.Database;
 import javafxmvc.model.database.DatabaseFactory;
 import javafxmvc.model.domain.Agencia;
+import javafxmvc.model.domain.Cliente;
 import javafxmvc.model.domain.Funcionario;
 public class FXMLAnchorPaneCadastrosFuncionariosDialogController implements Initializable {
 
@@ -37,8 +38,6 @@ public class FXMLAnchorPaneCadastrosFuncionariosDialogController implements Init
     private TextField textFieldFuncionarioNome;
 
     
-    @FXML
-    private TextField textFieldFuncionarioValor;
     @FXML
     private TextField textFieldFuncionarioTelefone;
     @FXML
@@ -85,7 +84,12 @@ public class FXMLAnchorPaneCadastrosFuncionariosDialogController implements Init
         listFuncionarios = supervisorDAO.listar();
         observableListFuncionarios = FXCollections.observableArrayList(listFuncionarios);
         comboBoxFuncionarioFuncionario.setItems(observableListFuncionarios);
-      
+         if (comboBoxFuncionarioAgencia.getSelectionModel().getSelectedItem() != null) {
+         Agencia f = (Agencia) comboBoxFuncionarioAgencia.getSelectionModel().getSelectedItem();
+       listFuncionarios = supervisorDAO.listar(f);
+        observableListFuncionarios = FXCollections.observableArrayList(listFuncionarios);
+        comboBoxFuncionarioFuncionario.setItems(observableListFuncionarios);
+        }
     }
     public Stage getDialogStage() {
         return dialogStage;
@@ -111,7 +115,6 @@ public class FXMLAnchorPaneCadastrosFuncionariosDialogController implements Init
         this.funcionario = funcionario;
         this.textFieldFuncionarioNome.setText(funcionario.getNome());
         this.textFieldFuncionarioTelefone.setText(funcionario.getTelefone());
-        this.textFieldFuncionarioValor.setText(Double.toString(funcionario.getValor()));
        
     }
 
@@ -134,7 +137,6 @@ public class FXMLAnchorPaneCadastrosFuncionariosDialogController implements Init
             funcionario.setTelefone(textFieldFuncionarioTelefone.getText());
             funcionario.setData(datePickerFuncionarioData.getValue());
                
-            funcionario.setValor(Double.parseDouble(textFieldFuncionarioValor.getText()));
             buttonConfirmarClicked = true;
             dialogStage.close();
         }
@@ -156,9 +158,7 @@ public class FXMLAnchorPaneCadastrosFuncionariosDialogController implements Init
         if (textFieldFuncionarioTelefone.getText() == null || textFieldFuncionarioTelefone.getText().length() == 0) {
             errorMessage += "Telefone inválido!\n";
         }
-        if (textFieldFuncionarioValor.getText() == null || textFieldFuncionarioValor.getText().length() == 0) {
-            errorMessage += "Valor inválido!\n";
-        }
+     
             if (datePickerFuncionarioData.getValue() == null) {
             errorMessage += "Data inválida!\n";
         }

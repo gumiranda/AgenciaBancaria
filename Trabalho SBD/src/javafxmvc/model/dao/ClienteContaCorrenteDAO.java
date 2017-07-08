@@ -70,9 +70,9 @@ public class ClienteContaCorrenteDAO {
             Logger.getLogger(ClienteContaCorrenteDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-    } 
+    }
      public List<ContaCorrente> listarConta(Cliente cliente) {
-         
+
               String sql = "SELECT * FROM cliente_possui_contacorrente WHERE  cliente_id=?";
                 List<ContaCorrente> retorno = new ArrayList<>();
         try {
@@ -86,14 +86,14 @@ public class ClienteContaCorrenteDAO {
                 ContaCorrenteDAO contaDAO = new ContaCorrenteDAO();
                 contaDAO.setConnection(connection);
                 c = contaDAO.buscar(c);
-                
+
                 retorno.add(c);
             }
         } catch (SQLException ex) {
             Logger.getLogger(ClienteContaCorrenteDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return retorno;
-   
+
     }
  public List<ContaCorrente> listarConta() {
         String sql = "SELECT * FROM cliente_possui_contacorrente";
@@ -108,7 +108,7 @@ public class ClienteContaCorrenteDAO {
                 ContaCorrenteDAO contaDAO = new ContaCorrenteDAO();
                 contaDAO.setConnection(connection);
                 c = contaDAO.buscar(c);
-                
+
                 retorno.add(c);
             }
         } catch (SQLException ex) {
@@ -129,7 +129,7 @@ public class ClienteContaCorrenteDAO {
                         //Obtendo os dados completos da associado ao clienteConta
                 ClienteDAO clienteDAO = new ClienteDAO();
                 clienteDAO.setConnection(connection);
-                f = clienteDAO.buscar(f);                
+                f = clienteDAO.buscar(f);
                 retorno.add(f);
             }
         } catch (SQLException ex) {
@@ -165,11 +165,11 @@ public class ClienteContaCorrenteDAO {
                 AgenciaDAO agenciaDAO = new AgenciaDAO();
                 agenciaDAO.setConnection(connection);
                 a = agenciaDAO.buscar(a);
-                
+
                  clienteConta.setCliente(f);
                  clienteConta.setContacorrente(c);
                  clienteConta.setAgencia(a);
-                
+                clienteConta.setClienteCPF(f.getCpf());
                 retorno.add(clienteConta);
             }
         } catch (SQLException ex) {

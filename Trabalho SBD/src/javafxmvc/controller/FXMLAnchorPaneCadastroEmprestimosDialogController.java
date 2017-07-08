@@ -109,15 +109,6 @@ public class FXMLAnchorPaneCadastroEmprestimosDialogController implements Initia
   
   public ClienteEmprestimo getClienteEmprestimo(){
       return this.clienteemp;
-    
-  }
-  
-  public void setEmprestimo(Emprestimo emprestimo){
-      this.emprestimo = emprestimo;
-  }
-  
-   public void setClienteEmprestimo(ClienteEmprestimo cemprestimo){
-      clienteemp = cemprestimo;
   }
   
   @FXML
