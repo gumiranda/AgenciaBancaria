@@ -13,6 +13,19 @@ public class ContaCorrente implements Serializable {
     public double getSaldo(){
         return saldo;
     }
+    
+    public boolean sacar(double valor){
+        if(this.saldo >= valor){
+        this.saldo = saldo - valor;
+        return true;
+    }
+        else return false;
+        
+    }
+    
+    public void depositar(double valor){
+        this.saldo = saldo + valor;
+    }
     public void setSaldo(double saldo){
         this.saldo = saldo;
     }
